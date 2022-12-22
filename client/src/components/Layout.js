@@ -70,15 +70,15 @@ class Layout extends React.Component {
         }
         let navigation = {
             
-            "admin": [{name : "home", icon: icons.home, path: "/" },{name : "reviews", icon: icons.comments, path: "/comments"}, {name : "top", icon: icons.top, path: "/top"}, {name : "browse", icon: icons.browse, path: "/browse"}, {name : "library", icon: icons.library, path: "/library"}, {name : "admin", icon: icons.admin, path: "/admin"}], 
-            "anonymous": [{name : "home", icon: icons.home, path: "/" },{name : "reviews", icon: icons.comments, path: "/comments"}, {name : "top", icon: icons.top, path: "/top"}, {name : "browse", icon: icons.browse, path: "/browse"}],
-            "user":[{name : "home", icon: icons.home, path: "/" },{name : "reviews", icon: icons.comments, path: "/comments"}, {name : "top", icon: icons.top, path: "/top"}, {name : "browse", icon: icons.browse, path: "/browse"}, {name : "library", icon: icons.library, path: "/library"}]
-          }///name, icon, href
+            "admin": [{name : "home", icon: icons.home, path: "/" },{name : "reviews", icon: icons.comments, path: "/comments"}/*, {name : "top", icon: icons.top, path: "/top"}*/, {name : "browse", icon: icons.browse, path: "/browse"}, {name : "library", icon: icons.library, path: "/library"}, {name : "admin", icon: icons.admin, path: "/admin"}], 
+            "anonymous": [{name : "home", icon: icons.home, path: "/" }/*{,{name : "reviews", icon: icons.comments, path: "/comments"}, {name : "top", icon: icons.top, path: "/top"}*/, {name : "browse", icon: icons.browse, path: "/browse"}],
+            "user":[{name : "home", icon: icons.home, path: "/" },{name : "reviews", icon: icons.comments, path: "/comments"}/*, {name : "top", icon: icons.top, path: "/top"}*/, {name : "browse", icon: icons.browse, path: "/browse"}, {name : "library", icon: icons.library, path: "/library"}]
+          }
           let profile = {
             "admin":  [ {name : "sign out", path: "/signout"}, {name : "settings", path: "/settings"}, {name : "admin", path: "/admin"}],
             "anonymous": [{name : "sign in", path: "/signin" }, {name : "register", path: "/signup"}],
             "user":  [ {name : "sign out", path: "/signout"}, {name : "settings", path: "/settings"}]
-        };//name, path
+        };
         return (
             <div className="App d-flex flex-nowrap">
                 <Navigation controls={navigation[this.state.user]} profile={profile[this.state.user]} avatar={icons[this.getAvatar()]}/>

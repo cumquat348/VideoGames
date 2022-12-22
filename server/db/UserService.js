@@ -19,10 +19,19 @@ const getUserLibrary = (id) => {
     }).then((arr) => {
         console.log(arr)
         return db.game.find({ '_id': { $in: arr } })
-            .then((data) => { return data }).catch((err) => { return [] })
+            .then((data) => { 
+             return data })
+             .catch((err) => { return [] })
     })
         .catch((err) => { return [] })
 }
+
+const addToUserLibrary = (id,gameid) => {
+    
+    return db.user.updateOne({_id : id},{ $addToSet: { library_ids:gameid }})
+        .catch((err) => { return [] })
+}
+
 
 const getUserByEmail = (email) => {
     return db.user.findOne({ email: email.toLowerCase() })
@@ -74,5 +83,6 @@ module.exports={
     getUserByEmail,
     getUserById,
     getUserLibrary,
+    addToUserLibrary
     
 }

@@ -33,9 +33,9 @@ const getAll = () => {
 }
 
 const search = (filters,sorting,perPage, page) => {
-    console.log(filters)
+    // console.log(filters)
     
-    return db.game.find(filters).limit(perPage).skip(perPage * page)//.sort(sorting)
+    return db.game.find(filters).limit(perPage).skip(perPage * page).sort(sorting)
 }
 
 const getById = (id) => {

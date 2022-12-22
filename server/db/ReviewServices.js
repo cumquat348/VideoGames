@@ -38,15 +38,20 @@ const getById = (id) => {
     return db.review.findOne({ _id: id })
 }
 
+const search = (filter) => {
+    console.log(filter)
+    return db.review.find(filter)
+}
+
 const get = (ids) => {
-    return db.review.find({'$in': ids })
+    return db.review.find( {_id : {'$in': ids }})
 }
 
 
 module.exports = {
     addReview,
     getAll,
-    // search,
+    search,
     get,
     getById,
     deleteReview,

@@ -9,7 +9,7 @@ export default function (props) {
     const handleSignOut=(evt)=>{
         const xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
-            console.log('back')
+            // console.log('back')
             navigate('/', {  replace: true })
             window.location.reload();
         }

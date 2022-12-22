@@ -7,23 +7,23 @@ import { Form } from 'react-bootstrap';
 class Browse extends React.Component {
     constructor(props) {
         super(props);
-        this.genres = ['racing', 'action', 'platform', 'arcade']
-        this.platforms = ['pc', 'xbox', 'ps', 'gameboy']
+        this.genres = []
+        this.platforms = []
 
 
         this.state = {
             games: [],
             filtersOpen: false,
             // f_genre : [],
-            f_serie : '',
-            f_platform : '',
-            f_release : ['',''],
-            f_added : ['', ''],
-            title : '',
+            f_serie: '',
+            f_platform: '',
+            f_release: ['', ''],
+            f_added: ['', ''],
+            title: '',
             filters: {},
-            sorting : {'name': 1},
-            
-            page : 0,
+            sorting: { 'name': 1 },
+
+            page: 0,
             maxreached: false
 
         }
@@ -37,89 +37,104 @@ class Browse extends React.Component {
         }
         this.handleSearch = (event) => {
             console.log(event.target.value);
-            this.setState({page:0,maxreached:false,title:event.target.value})
-            this.fetchGames((data) => {
-                console.log(data)
-                this.setState({
-                    games: data
-                });
-            }, { title: event.target.value })
+            this.setState({ page: 0, maxreached: false, title: event.target.value }, () => {
+                this.fetchGames((data) => {
+                    console.log(data)
+                    this.setState({
+                        games: data
+                    });
+                }, null)
+            }
+            )
+
         }
-        this.handleGenre= (ev) => {
+        this.handleGenre = (ev) => {
             console.log(ev.target.value)
             let tmp = this.state.f_genre
             tmp[ev.target.value] = ev.target.checked
-            this.setState({f_genre : tmp});
+            this.setState({ f_genre: tmp });
         }
-        this.handleSerie= (ev) => {
-            this.setState({f_serie : ev.target.value});
+        this.handleSerie = (ev) => {
+            this.setState({ f_serie: ev.target.value });
         }
-        this.handlePlatform= (ev) => {
-            this.setState({f_platform : ev.target.value});
+        this.handlePlatform = (ev) => {
+            this.setState({ f_platform: ev.target.value });
         }
-        this.handleReleased= (ev) => {
-            // this.setState({f_release : ev.target.value});
+        this.handleReleased = (ev) => {
             
-            this.setState({f_release : [document.getElementsByName('realesefrom')[0].value, document.getElementsByName('realeseto')[0].value]});
-            
+
+            this.setState({ f_release: [document.getElementsByName('realesefrom')[0].value, document.getElementsByName('realeseto')[0].value] });
+
         }
-        this.handleAdded= (ev) => {
+        this.handleAdded = (ev) => {
             // this.setState({f_added : ev.target.value});
-            this.setState({f_added : [document.getElementsByName('addedfrom')[0].value, document.getElementsByName('addedto')[0].value]});
+            this.setState({ f_added: [document.getElementsByName('addedfrom')[0].value, document.getElementsByName('addedto')[0].value] });
         }
         this.handleRefresh = () => {
 
         }
-        this.apply = (ev)=>{
-            let f_genre = Object.entries(this.state.f_genre).filter(([key,value])=>value != false)
-                let ff = {}
-                
-                f_genre.forEach( ([k,v]) => {
-                    if("genre" in ff ){
-                        ff["genre"].push(k)
-                    }
-                    else{
-                        ff["genre"] = [k]
-                    }  
-                })
+        this.apply = (ev) => {
+            let f_genre = Object.entries(this.state.f_genre).filter(([key, value]) => value != false)
+            let ff = {}
 
-                if(typeof this.state.title === 'string' &&  this.state.title.length > 0)
-                {
-                    ff["title"] = this.state.title
+            f_genre.forEach(([k, v]) => {
+                if ("genre" in ff) {
+                    ff["genre"].push(k)
                 }
-                if(typeof this.state.f_serie === 'string' &&  this.state.f_serie.length > 0)
-                {
-                    ff["series"] = this.state.f_serie
+                else {
+                    ff["genre"] = [k]
                 }
-                if(typeof this.state.f_platform === 'string' &&  this.state.f_platform.length > 0)
-                {
-                    ff["platform"] = this.state.f_platform
-                }
+            })
 
-                if(
-                    (typeof this.state.f_release[0] === 'string' &&  this.state.f_release[0].length > 0) ||(typeof this.state.f_release[1] === 'string' &&  this.state.f_release[1].length > 0) 
-                    )
-                {
-                    ff["release_date"] = this.state.f_release
-                }
+            if (typeof this.state.title === 'string' && this.state.title.length > 0) {
+                ff["title"] = this.state.title
+            }
+            if (typeof this.state.f_serie === 'string' && this.state.f_serie.length > 0) {
+                ff["series"] = this.state.f_serie
+            }
+            if (typeof this.state.f_platform === 'string' && this.state.f_platform.length > 0) {
+                ff["platform"] = this.state.f_platform
+            }
 
-                if(
-                    (typeof this.state.f_added[0] === 'string' &&  this.state.f_added[0].length > 0) ||(typeof this.state.f_added[1] === 'string' &&  this.state.f_added[1].length > 0) 
-                    )
-                {
-                    ff["added_date"] = this.state.f_added
-                }
-                
+            if (
+                (typeof this.state.f_release[0] === 'string' && this.state.f_release[0].length > 0) || (typeof this.state.f_release[1] === 'string' && this.state.f_release[1].length > 0)
+            ) {
+                ff["release_date"] = this.state.f_release
+            }
+
+            if (
+                (typeof this.state.f_added[0] === 'string' && this.state.f_added[0].length > 0) || (typeof this.state.f_added[1] === 'string' && this.state.f_added[1].length > 0)
+            ) {
+                ff["added_date"] = this.state.f_added
+            }
+            this.setState({ filters: ff, page: 0, maxreached: false }, () => {
                 this.fetchGames((data) => {
-                 
-                    let test = data.concat(data)
-                    let r = test.concat(test)
                     this.setState({
-                        games: r
+                        games: data
                     });
-                }, ff)
-                
+                }, null)
+            })
+
+
+
         }
+        this.fetchFilters = (callback, params) => {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                let r = this.response;
+                let result = JSON.parse(r)
+
+                callback(result)
+            }
+            xhttp.open("GET", "/filters", true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.setRequestHeader("Charset", "UTF-8");
+
+
+            xhttp.send();
+        }
+
+
         this.fetchGames = (callback, params) => {
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function () {
@@ -131,56 +146,58 @@ class Browse extends React.Component {
             xhttp.open("POST", "/search", true);
             xhttp.setRequestHeader("Content-Type", "application/json");
             xhttp.setRequestHeader("Charset", "UTF-8");
-            // var parameters = null
-            // if (params !== null) {
-            //     parameters = JSON.stringify(params)
-            //     if (!isJsonString(parameters)) {
-            //         parameters = null
-            //     }
-            // }
-            var params = {title: this.state.title, page: this.state.page}
 
-            var parameters =JSON.stringify( {...params})
+            var params = { title: this.state.title, page: this.state.page, ...this.state.filters }
+
+            var parameters = JSON.stringify({ ...params })
             xhttp.send(parameters);
         }
-        this.loadMore=(ev)=>{
-            // console.log(this.state.page)
-            if(!this.state.maxreached)
-            {
-            let n = this.state.page + 1
-            this.setState({page: n },()=>{
-                this.fetchGames((data)=>{
-                    if(data == '')
-                    {
-                        this.setState({maxreached:true})
-                        
-                    }
-                    else{
-                    let g = this.state.games
-                    console.log(data)
-                    this.setState({games: [...g, ...data]})
-                    }
+        this.loadMore = (ev) => {
+
+            if (!this.state.maxreached) {
+                let n = this.state.page + 1
+                this.setState({ page: n }, () => {
+                    this.fetchGames((data) => {
+                        if (data == '') {
+                            this.setState({ maxreached: true })
+
+                        }
+                        else {
+                            let g = this.state.games
+                            console.log(data)
+                            this.setState({ games: [...g, ...data] })
+                        }
+                    })
                 })
-            }) 
-        }
+            }
         }
     }
-    componentDidMount() 
-    {
+    componentDidMount() {
         this.fetchGames((data) => {
             console.log(data)
-            let test = data.concat(data)
-            let r = test.concat(test)
+            // let test = data.concat(data)
+            // let r = test.concat(test)
             this.setState({
-                games: r
+                games: data
             });
         }, null)
-        
-        let f_genre = {}
-        this.genres.map((g, i) => {
-            f_genre[g]= false
+        this.fetchFilters((data) => {
+            console.log(data, 1)
+            if ('response' in data) {
+                this.genres = data.response.genres
+                this.platforms = data.response.platform
+
+            }
+            console.log(this.genres, 2)
+
+            let f_genre = {}
+            this.genres.map((g, i) => {
+                f_genre[g] = false
+            })
+            this.setState({ f_genre: f_genre })
         })
-        this.setState({f_genre: f_genre})
+
+
     }
     render(props) {
         return (
@@ -225,18 +242,7 @@ class Browse extends React.Component {
                                     }
                                 </Form.Group>
 
-                                <Form.Group className="mb-3" controlId="filters_serie">
-                                    <Form.Label>Seria</Form.Label>
-                                    <br />
-                                    <Form.Control
-                                        inline
-                                        onChange={this.handleSerie}
-                                        label={'series'}
-                                        name={'series'}
-                                        type={"text"}
-                                    />
 
-                                </Form.Group>
 
 
                                 <Form.Group className="mb-3" onChange={this.handlePlatform} controlId="filters_platform">
@@ -270,7 +276,7 @@ class Browse extends React.Component {
                                         inline
                                         label={'realese'}
                                         name={'realesefrom'}
-                                        
+
                                         type="date"
                                     />
                                     <Form.Label>Do</Form.Label>
@@ -279,7 +285,7 @@ class Browse extends React.Component {
                                         inline
                                         label={'realese'}
                                         name={'realeseto'}
-                                        
+
                                         type="date"
                                     />
 
@@ -295,7 +301,7 @@ class Browse extends React.Component {
                                         inline
                                         label={'added'}
                                         name={'addedfrom'}
-                                        
+
                                         type="date"
                                     />
                                     <Form.Label>Do</Form.Label>
@@ -304,7 +310,7 @@ class Browse extends React.Component {
                                         inline
                                         label={'added'}
                                         name={'addedto'}
-                                        
+
                                         type="date"
                                     />
 
@@ -321,13 +327,13 @@ class Browse extends React.Component {
                         {this.state.games.map((game, indx) => {
                             return (
                                 <div key={indx} className='col'>
-                                    <GameCard url={'/game/'+game._id} name={game.title} img={"https://play-lh.googleusercontent.com/5LIMaa7WTNy34bzdFhBETa2MRj7mFJZWb8gCn_uyxQkUvFx_uOFCeQjcK16c6WpBA3E"} />
+                                    <GameCard url={'/game/' + game._id} name={game.title} img={"https://play-lh.googleusercontent.com/5LIMaa7WTNy34bzdFhBETa2MRj7mFJZWb8gCn_uyxQkUvFx_uOFCeQjcK16c6WpBA3E"} />
                                 </div>
                             )
                         })}
                     </div>
                 </div>
-                <Button disabled={this.state.maxreached} className='w-25'onClick={this.loadMore}>Więcej </Button>
+                <Button disabled={this.state.maxreached} className='w-25' onClick={this.loadMore}>Więcej </Button>
             </div>
         );
     }

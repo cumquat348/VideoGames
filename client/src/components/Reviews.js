@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/esm/Button';
 import React from 'react';
 import GameCard from './GameCard'
 
-class Home extends React.Component {
+class Reviews extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -46,7 +46,7 @@ class Home extends React.Component {
                 
                 callback(result)
             }
-            xhttp.open("POST", "/search", true);
+            xhttp.open("POST", "/myReviews", true);
             xhttp.setRequestHeader("Content-Type", "application/json");
             xhttp.setRequestHeader("Charset", "UTF-8");
             var params = {title: this.state.title, page: this.state.page}
@@ -94,13 +94,6 @@ class Home extends React.Component {
         return (
             <div className="w-100 " style={{height: "100vh", overflowY : "scroll"}}>
 
-                <div className='py-3 mb-3 '>
-                    <div className="d-flex align-items-center">
-                        <div className="w-100 me-3 m-1 " role="search">
-                            <input onChange={this.handleSearch} type="search" className="form-control" placeholder="Search..." aria-label="Search" />
-                        </div>
-                    </div>
-                </div>
                 
                 <div className="container">
                     <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 justify-content-around ">
@@ -119,4 +112,4 @@ class Home extends React.Component {
         );
     }
 }
-export default Home;
+export default Reviews;

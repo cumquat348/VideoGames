@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 exports.connect = ()=>{
     mongoose
@@ -29,13 +30,14 @@ const gameSchema = new mongoose.Schema({
     title: { type: String },
     description: { type: String },
     genre: { type: Array },
-    series: { type: String },
+    // series: { type: String },
     platform: { type:Array },
-    publisher: { type: String },
+    publisher: { type: Array },
+    developer: { type: Array },
     release_date: { type: Date },
-    requirements: { type:String },
+    minimal_requirements: { type:String },
+    recommended_requirements: { type:String },
     review_id: { type:Array}
-
 });
 
 const Game = mongoose.model("game", gameSchema, 'games');
@@ -43,11 +45,11 @@ exports.game = Game
 
 
 const reviewSchema = new mongoose.Schema({
-    _id_game: { type: String },
-    _id_user: { type: String },
+    _id_game: { type: ObjectId },
+    _id_user: { type: ObjectId },
     content: { type: String },
     rating: { type: String },
-    date: { type:Date },
+    // date: { type:Date },
 });
 
 const Review = mongoose.model("review", reviewSchema, 'reviews');

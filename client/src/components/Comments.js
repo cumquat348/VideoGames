@@ -4,34 +4,24 @@ import { ListGroup } from 'react-bootstrap';
 import { ReactDOM } from 'react';
 import ReviewCard from './ReviewCard';
 
-class Comments extends React.Component {                
-    constructor(props) {
-        super(props)
-    
+
+
+export default function Comments(props) {            
+    var cards = [];
+    console.log(props)
+    for(let i =0;i<props.reviews.length;++i)
+    {
+        let temp = <ListGroup key={''+i+0} className={props.reviews[i]['flag']=='owner'?'bg-success':'bg-danger'}>
+        <ListGroup.Item key={''+i+1} className={props.reviews[i]['flag']=='owner'?'bg-success':null}> Użytkownik : {props.reviews[i]['_id_user']} </ListGroup.Item>
+        <ListGroup.Item key={''+i+2} className={props.reviews[i]['flag']=='owner'?'bg-success':null}> Ocena : {props.reviews[i].rating}</ListGroup.Item>
+        <ListGroup.Item key={''+i+3} className={props.reviews[i]['flag']=='owner'?'bg-success':null}> Opis : {props.reviews[i].content}</ListGroup.Item>
+    </ListGroup>
+        cards.push(temp)
     }
-    
-      
-    render(props)
-        {
-            var cards = [];
-            this.props.reviews.forEach((item,idx)=>{
-                
-                var card = [];
-                
-                Object.entries(item).map(([key,value],i)=>{
-                    card.push(<ListGroup.Item key={i}>{key}: {value}</ListGroup.Item>)
-                })
-                cards.push(<ReviewCard key={idx} title={item._id_user=='owner'?'Twoja opinia':item._id_user} mark={item.rating} description={item.content}/>)
-            })
-            
-        
-            return(
-                <div className='w-100 container'>
-                    Komentarze:
-                    <div className='row'>{cards}</div>
-                    
-                </div>
-            )
-        }
-}
-export default Comments;
+    return(
+        <div>
+            {cards}
+        </div>
+    )
+  }
+  

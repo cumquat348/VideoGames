@@ -14,7 +14,7 @@ import About from './components/About';
 import Layout from './components/Layout';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Settings from './components/TODO/Settings';
-import Admin from './components/TODO/Admin';
+import Admin from './components/Admin';
 
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
@@ -23,6 +23,7 @@ import SignOut from './components/SignOut';
 import Library from './components/Library';
 import Game from './components/Game'
 import Top from './components/Top';
+import Reviews from './components/Reviews';
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -39,7 +40,7 @@ class App extends React.Component {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             
-            <Route path="blogs" element={<About />} />
+            <Route path="comments" element={<Reviews />} />
             <Route path="contact" element={<About />} />
 
             <Route path="signin" element={<SignIn />} />
